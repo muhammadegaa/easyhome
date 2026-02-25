@@ -107,8 +107,7 @@
   .card-interactive {
     @apply card hover:-translate-y-2 hover:shadow-lift-lg cursor-pointer
            transition-all duration-500
-           hover:border-primary-200
-           group;
+           hover:border-primary-200;
   }
 
   /* Property Card Styles */
@@ -117,8 +116,7 @@
            shadow-md hover:shadow-lift-lg
            transition-all duration-500
            border border-neutral-100 hover:border-primary-200
-           transform hover:-translate-y-2
-           group;
+           transform hover:-translate-y-2;
   }
 
   .property-card-image {

@@ -284,7 +284,7 @@ function PropertiesPageContent() {
                 <Link
                   key={property.id}
                   href={`/properties/${property.id}`}
-                  className="property-card animate-slide-up"
+                  className="property-card group animate-slide-up"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="property-card-image">
