@@ -7,6 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import { propertyAPI } from '@/lib/api/client';
 import useAuthStore from '@/lib/store/authStore';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '@/lib/utils/env';
 
 export default function PropertyDetailPage() {
   const params = useParams();
@@ -114,7 +115,7 @@ export default function PropertyDetailPage() {
                   {/* Main Image */}
                   <div className="relative h-96 bg-gray-200">
                     <img
-                      src={`http://localhost:5000${images[selectedImage]?.url}`}
+                      src={getImageUrl(images[selectedImage]?.url)}
                       alt={property.title}
                       className="w-full h-full object-cover"
                     />
@@ -137,7 +138,7 @@ export default function PropertyDetailPage() {
                           }`}
                         >
                           <img
-                            src={`http://localhost:5000${image.url}`}
+                            src={getImageUrl(image.url)}
                             alt={`View ${index + 1}`}
                             className="w-full h-full object-cover"
                           />

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import useAuthStore from '@/lib/store/authStore';
 import { propertyAPI } from '@/lib/api/client';
+import { getImageUrl } from '@/lib/utils/env';
 import toast from 'react-hot-toast';
 
 export default function DashboardPage() {
@@ -172,7 +173,7 @@ export default function DashboardPage() {
                 <div className="h-48 bg-gray-200 relative">
                   {property.images?.[0] ? (
                     <img
-                      src={`http://localhost:5000${property.images[0].url}`}
+                      src={getImageUrl(property.images[0].url)}
                       alt={property.title}
                       className="w-full h-full object-cover"
                     />

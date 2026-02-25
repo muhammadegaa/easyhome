@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import useAuthStore from '@/lib/store/authStore';
 import { propertyAPI } from '@/lib/api/client';
+import { getApiUrl } from '@/lib/utils/env';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
@@ -177,8 +178,9 @@ export default function NewPropertyPage() {
           formDataImages.append('images', file);
         });
 
+        const apiUrl = getApiUrl();
         await axios.post(
-          `http://localhost:5000/api/properties/${propertyId}/images`,
+          `${apiUrl}/api/properties/${propertyId}/images`,
           formDataImages,
           {
             headers: {

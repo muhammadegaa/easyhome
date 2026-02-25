@@ -763,7 +763,7 @@ export default function HomePage() {
 
           <div className="border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-neutral-400 text-sm">
-              &copy; 2024 EasyHome. All rights reserved. Integrated Electronic Housing Marketplace
+              &copy; 2026 EasyHome. All rights reserved. Integrated Electronic Housing Marketplace
             </p>
             <div className="flex gap-6 text-sm text-neutral-400">
               <span>Made with ❤️ in Indonesia</span>
