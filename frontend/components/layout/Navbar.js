@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import useAuthStore from '@/lib/store/authStore';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const { user, logout, initialize } = useAuthStore();
@@ -86,6 +87,7 @@ export default function Navbar() {
 
           {/* Right side - Desktop */}
           <div className="hidden md:flex items-center space-x-3">
+            <LanguageSwitcher />
             {user ? (
               <>
                 <Link href="/properties/new" className="btn-primary text-sm">

@@ -4,9 +4,9 @@
  */
 
 /**
- * Format number as Indonesian Rupiah
+ * Format number as Indonesian Rupiah (natural, empathetic formatting)
  * @param {number} amount - Amount in IDR
- * @param {boolean} compact - Use compact notation (e.g., "2.5 M" instead of "2,500,000")
+ * @param {boolean} compact - Use compact notation (e.g., "Rp 2.5 M" for Miliar)
  * @returns {string} Formatted currency string
  */
 export function formatRupiah(amount, compact = false) {
@@ -15,21 +15,29 @@ export function formatRupiah(amount, compact = false) {
   const numAmount = Number(amount);
 
   if (compact) {
-    // Use compact notation for large numbers
+    // Use natural Indonesian notation
     if (numAmount >= 1000000000) {
-      // Billions (Miliar)
-      return `Rp ${(numAmount / 1000000000).toFixed(1)} M`;
+      // Billions (Miliar) - Indonesians say "2.5 Miliar" not "2500 Juta"
+      const miliar = numAmount / 1000000000;
+      if (miliar >= 10) {
+        return `Rp ${Math.round(miliar)} M`; // "Rp 15 M" for 15+ billion
+      }
+      return `Rp ${miliar.toFixed(1)} M`; // "Rp 2.5 M" for under 10 billion
     } else if (numAmount >= 1000000) {
-      // Millions (Juta)
-      return `Rp ${(numAmount / 1000000).toFixed(1)} Jt`;
-    } else if (numAmount >= 1000) {
-      // Thousands (Ribu)
-      return `Rp ${(numAmount / 1000).toFixed(0)} Rb`;
+      // Millions (Juta) - only use for under 1 billion
+      const juta = numAmount / 1000000;
+      if (juta >= 100) {
+        return `Rp ${Math.round(juta)} Jt`; // "Rp 850 Jt"
+      }
+      return `Rp ${juta.toFixed(juta >= 10 ? 0 : 1)} Jt`; // "Rp 2.5 Jt" or "Rp 25 Jt"
+    } else if (numAmount >= 10000) {
+      // Thousands (Ribu) - for prices under 1 million
+      return `Rp ${Math.round(numAmount / 1000)} Rb`;
     }
     return `Rp ${numAmount.toLocaleString('id-ID')}`;
   }
 
-  // Full format with Indonesian locale
+  // Full format with Indonesian locale (Rp 2.500.000)
   return `Rp ${numAmount.toLocaleString('id-ID')}`;
 }
 
