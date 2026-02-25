@@ -1,0 +1,337 @@
+// EasyHome Database Schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User roles enum
+enum UserRole {
+  BUYER
+  SELLER
+  DEVELOPER
+  NOTARY
+  ADMIN
+}
+
+// Membership tiers
+enum MembershipTier {
+  NONE
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+// Property types
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  LAND
+  COMMERCIAL
+  VILLA
+}
+
+// Property status
+enum PropertyStatus {
+  AVAILABLE
+  PENDING
+  SOLD
+  RENTED
+}
+
+// Transaction status
+enum TransactionStatus {
+  INITIATED
+  IN_PROGRESS
+  AWAITING_PAYMENT
+  COMPLETED
+  CANCELLED
+}
+
+// Listing type
+enum ListingType {
+  SALE
+  RENT
+}
+
+// User model
+model User {
+  id                String           @id @default(cuid())
+  email             String           @unique
+  phone             String?          @unique
+  password          String
+  name              String
+  role              UserRole         @default(BUYER)
+  isVerified        Boolean          @default(false)
+  verificationToken String?
+
+  // Profile details
+  avatar            String?
+  address           String?
+  city              String?
+  province          String?
+  zipCode           String?
+
+  // Developer/Notary specific
+  companyName       String?
+  businessLicense   String?
+  membershipTier    MembershipTier   @default(NONE)
+  membershipExpiry  DateTime?
+
+  // Timestamps
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  // Relations
+  properties        Property[]       @relation("PropertyOwner")
+  favoriteProperties PropertyFavorite[]
+  sentMessages      Message[]        @relation("MessageSender")
+  receivedMessages  Message[]        @relation("MessageReceiver")
+  transactions      Transaction[]
+  reviews           Review[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// Property model
+model Property {
+  id              String         @id @default(cuid())
+  title           String
+  description     String         @db.Text
+  propertyType    PropertyType
+  listingType     ListingType
+  status          PropertyStatus @default(AVAILABLE)
+
+  // Pricing
+  price           Decimal        @db.Decimal(15, 2)
+  pricePerMonth   Decimal?       @db.Decimal(15, 2) // For rentals
+
+  // Location
+  address         String
+  city            String
+  province        String
+  zipCode         String?
+  latitude        Float?
+  longitude       Float?
+
+  // Property details
+  landArea        Float?         // in sqm
+  buildingArea    Float?         // in sqm
+  bedrooms        Int?
+  bathrooms       Int?
+  floors          Int?
+  carports        Int?
+
+  // Features
+  furnished       Boolean        @default(false)
+  certificate     String?        // SHM, SHGB, etc.
+  yearBuilt       Int?
+
+  // Media
+  images          PropertyImage[]
+  virtualTour     String?        // URL to 360 tour
+
+  // Owner
+  ownerId         String
+  owner           User           @relation("PropertyOwner", fields: [ownerId], references: [id])
+
+  // Boosting (paid ads)
+  isBoosted       Boolean        @default(false)
+  boostExpiry     DateTime?
+  boostTier       Int?           // 1-4 for different boost levels
+
+  // Stats
+  viewCount       Int            @default(0)
+  favoriteCount   Int            @default(0)
+
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  publishedAt     DateTime?
+
+  // Relations
+  favorites       PropertyFavorite[]
+  messages        Message[]
+  transactions    Transaction[]
+  reviews         Review[]
+
+  @@index([ownerId])
+  @@index([propertyType])
+  @@index([listingType])
+  @@index([status])
+  @@index([city])
+  @@index([price])
+}
+
+// Property images
+model PropertyImage {
+  id          String   @id @default(cuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url         String
+  caption     String?
+  category    String?  // exterior, interior, kitchen, bedroom, etc.
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([propertyId])
+}
+
+// Property favorites
+model PropertyFavorite {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, propertyId])
+  @@index([userId])
+  @@index([propertyId])
+}
+
+// Messaging system
+model Message {
+  id          String   @id @default(cuid())
+  senderId    String
+  sender      User     @relation("MessageSender", fields: [senderId], references: [id])
+  receiverId  String
+  receiver    User     @relation("MessageReceiver", fields: [receiverId], references: [id])
+  propertyId  String?
+  property    Property? @relation(fields: [propertyId], references: [id])
+
+  content     String   @db.Text
+  isRead      Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([propertyId])
+}
+
+// Transaction model
+model Transaction {
+  id              String            @id @default(cuid())
+  propertyId      String
+  property        Property          @relation(fields: [propertyId], references: [id])
+  buyerId         String
+  buyer           User              @relation(fields: [buyerId], references: [id])
+
+  // Pricing
+  agreedPrice     Decimal           @db.Decimal(15, 2)
+  platformFee     Decimal           @db.Decimal(15, 2)
+  platformFeeRate Decimal           @db.Decimal(5, 4) // 0.0005 - 0.0009
+
+  // Status
+  status          TransactionStatus @default(INITIATED)
+
+  // Notary information
+  notaryId        String?
+  notaryName      String?
+  notaryContact   String?
+  appointmentDate DateTime?
+
+  // Documents
+  documents       TransactionDocument[]
+
+  // Payment
+  paymentMethod   String?
+  paymentProof    String?
+  paidAt          DateTime?
+
+  // Timestamps
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  completedAt     DateTime?
+
+  @@index([propertyId])
+  @@index([buyerId])
+  @@index([status])
+}
+
+// Transaction documents
+model TransactionDocument {
+  id            String      @id @default(cuid())
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  name          String
+  type          String      // certificate, id_card, tax_document, etc.
+  url           String
+  uploadedBy    String      // userId
+
+  createdAt     DateTime    @default(now())
+
+  @@index([transactionId])
+}
+
+// Review/Rating system
+model Review {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+
+  rating     Int      // 1-5
+  comment    String?  @db.Text
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([propertyId, userId])
+  @@index([propertyId])
+  @@index([userId])
+}
+
+// Membership payments
+model MembershipPayment {
+  id              String         @id @default(cuid())
+  userId          String
+  tier            MembershipTier
+  amount          Decimal        @db.Decimal(15, 2)
+  duration        Int            // in months
+
+  paymentMethod   String
+  paymentProof    String?
+  status          String         // pending, confirmed, rejected
+
+  startDate       DateTime?
+  endDate         DateTime?
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([userId])
+}
+
+// Property ad boost payments
+model AdBoostPayment {
+  id              String   @id @default(cuid())
+  propertyId      String
+  userId          String
+  tier            Int      // 1-4
+  amount          Decimal  @db.Decimal(15, 2)
+  duration        Int      // in days
+
+  paymentMethod   String
+  paymentProof    String?
+  status          String   // pending, confirmed, rejected
+
+  startDate       DateTime?
+  endDate         DateTime?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([propertyId])
+  @@index([userId])
+}
