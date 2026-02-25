@@ -102,7 +102,7 @@
   }
 
   .gradient-mesh {
-    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 25%, #0f766e 50%, #14b8a6 75%, #2dd4b8 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 25%, #047857 50%, #10b981 75%, #34d399 100%);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
   }
@@ -145,22 +145,22 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #14b8a6;
+  background: #10b981;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0d9488;
+  background: #059669;
 }
 
 /* Selection */
 ::selection {
-  background-color: #14b8a6;
+  background-color: #10b981;
   color: white;
 }
 
 /* Focus visible */
 :focus-visible {
-  outline: 2px solid #14b8a6;
+  outline: 2px solid #10b981;
   outline-offset: 2px;
 }

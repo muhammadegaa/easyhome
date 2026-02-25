@@ -94,7 +94,7 @@ export default function HomePage() {
                 <div className="text-white/80 text-sm font-medium">Properties Listed</div>
               </div>
               <div className="glass rounded-2xl px-6 py-4">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-1">₹50Cr+</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-1">Rp 500M+</div>
                 <div className="text-white/80 text-sm font-medium">Transactions</div>
               </div>
               <div className="glass rounded-2xl px-6 py-4">
@@ -176,14 +176,14 @@ export default function HomePage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <input
                       type="number"
-                      placeholder="Min Price (₹)"
+                      placeholder="Min Price (Rp)"
                       className="input-field"
                       value={filters.minPrice}
                       onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
                     />
                     <input
                       type="number"
-                      placeholder="Max Price (₹)"
+                      placeholder="Max Price (Rp)"
                       className="input-field"
                       value={filters.maxPrice}
                       onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
@@ -433,7 +433,7 @@ export default function HomePage() {
             </div>
             <h3 className="text-2xl font-bold text-neutral-900 mb-3">Save Up to 50x</h3>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              Traditional brokers charge 2-5% commission. We charge only 0.05-0.09%. On a ₹1 Crore property, that's savings of ₹1.9-4.9 Lakhs.
+              Traditional brokers charge 2-5% commission. We charge only 0.05-0.09%. On a Rp 1 Billion property, that's savings of Rp 19-49 Million.
             </p>
             <div className="inline-flex items-center text-primary-600 font-semibold group cursor-pointer">
               Learn more
@@ -566,7 +566,7 @@ export default function HomePage() {
                   <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <span className="text-neutral-600">2-5% commission fees (₹2-5 Lakhs per Crore)</span>
+                  <span className="text-neutral-600">2-5% commission fees (Rp 20-50 Million per Billion)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -613,7 +613,7 @@ export default function HomePage() {
                   <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-neutral-900 font-medium">0.05-0.09% fee (₹5K-9K per Crore)</span>
+                  <span className="text-neutral-900 font-medium">0.05-0.09% fee (Rp 500K-900K per Billion)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -654,7 +654,7 @@ export default function HomePage() {
         <div className="section-container relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              Ready to Save Lakhs on Your Next Property?
+              Ready to Save Millions on Your Next Property?
             </h2>
             <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed">
               Join thousands of smart buyers and sellers who are eliminating broker fees and closing deals faster
@@ -699,7 +699,7 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <div className="text-left">
-                    <div className="font-bold text-2xl">₹50Cr+</div>
+                    <div className="font-bold text-2xl">Rp 500M+</div>
                     <div className="text-white/80 text-sm">Transactions</div>
                   </div>
                 </div>
