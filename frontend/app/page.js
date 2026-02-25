@@ -596,10 +596,11 @@ export default function HomePage() {
             </div>
 
             {/* EasyHome Method */}
-            <div className="card p-8 border-2 border-primary-500 shadow-glow relative">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 badge bg-accent-500 text-white px-4 py-2 text-sm whitespace-nowrap">
+            <div className="relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 badge bg-accent-500 text-white px-4 py-2 text-sm whitespace-nowrap shadow-lg z-10">
                 Recommended
               </div>
+              <div className="card p-8 border-2 border-primary-500 shadow-glow pt-10">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -640,6 +641,7 @@ export default function HomePage() {
                   <span className="text-neutral-900 font-medium">Transparent pricing, no hidden fees</span>
                 </li>
               </ul>
+              </div>
             </div>
           </div>
         </div>
