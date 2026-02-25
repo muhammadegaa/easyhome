@@ -5,8 +5,10 @@ import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import { propertyAPI } from '@/lib/api/client';
 import toast from 'react-hot-toast';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 export default function HomePage() {
+  const { t } = useLanguage();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -70,40 +72,38 @@ export default function HomePage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
               </span>
-              <span className="text-white font-semibold text-sm">Integrated Electronic Housing Marketplace</span>
+              <span className="text-white font-semibold text-sm">{t.home.badge}</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-6 animate-fade-in leading-tight">
-              Eliminate <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-primary-100">Broker Fees</span>
+              {t.home.headline} <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-primary-100"></span>
               <br />
-              <span className="text-5xl md:text-6xl lg:text-7xl">Buy & Sell Direct</span>
+              <span className="text-5xl md:text-6xl lg:text-7xl">{t.home.subheadline}</span>
             </h1>
 
             {/* Subheadline */}
             <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto animate-slide-up leading-relaxed">
-              Save <strong className="font-bold text-white">2-5%</strong> on every transaction. Connect directly with property owners.
-              <br className="hidden md:block" />
-              No middlemen. Just transparent, efficient deals.
+              {t.home.description}
             </p>
 
             {/* Stats Bar */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 animate-slide-up" style={{ animationDelay: '0.2s' }}>
               <div className="glass rounded-2xl px-6 py-4">
                 <div className="text-3xl md:text-4xl font-bold text-white mb-1">1000+</div>
-                <div className="text-white/80 text-sm font-medium">Properties Listed</div>
+                <div className="text-white/80 text-sm font-medium">{t.home.stats.properties}</div>
               </div>
               <div className="glass rounded-2xl px-6 py-4">
                 <div className="text-3xl md:text-4xl font-bold text-white mb-1">Rp 500M+</div>
-                <div className="text-white/80 text-sm font-medium">Transactions</div>
+                <div className="text-white/80 text-sm font-medium">{t.home.stats.transactions}</div>
               </div>
               <div className="glass rounded-2xl px-6 py-4">
                 <div className="text-3xl md:text-4xl font-bold text-white mb-1">0.05%</div>
-                <div className="text-white/80 text-sm font-medium">Platform Fee</div>
+                <div className="text-white/80 text-sm font-medium">{t.home.stats.platformFee}</div>
               </div>
               <div className="glass rounded-2xl px-6 py-4">
                 <div className="text-3xl md:text-4xl font-bold text-white mb-1">5000+</div>
-                <div className="text-white/80 text-sm font-medium">Happy Users</div>
+                <div className="text-white/80 text-sm font-medium">{t.home.stats.users}</div>
               </div>
             </div>
 
@@ -114,7 +114,7 @@ export default function HomePage() {
                 <div className="lg:col-span-4">
                   <input
                     type="text"
-                    placeholder="Search location or property..."
+                    placeholder={t.home.search.placeholder}
                     className="input-field"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -129,12 +129,12 @@ export default function HomePage() {
                     value={filters.propertyType}
                     onChange={(e) => setFilters({ ...filters, propertyType: e.target.value })}
                   >
-                    <option value="">All Property Types</option>
-                    <option value="HOUSE">House</option>
-                    <option value="APARTMENT">Apartment</option>
-                    <option value="VILLA">Villa</option>
-                    <option value="LAND">Land</option>
-                    <option value="COMMERCIAL">Commercial</option>
+                    <option value="">{t.home.search.allTypes}</option>
+                    <option value="HOUSE">{t.home.search.house}</option>
+                    <option value="APARTMENT">{t.home.search.apartment}</option>
+                    <option value="VILLA">{t.home.search.villa}</option>
+                    <option value="LAND">{t.home.search.land}</option>
+                    <option value="COMMERCIAL">{t.home.search.commercial}</option>
                   </select>
                 </div>
 
@@ -142,7 +142,7 @@ export default function HomePage() {
                 <div className="lg:col-span-2">
                   <input
                     type="text"
-                    placeholder="City"
+                    placeholder={t.home.search.city}
                     className="input-field"
                     value={filters.city}
                     onChange={(e) => setFilters({ ...filters, city: e.target.value })}
@@ -159,7 +159,7 @@ export default function HomePage() {
                     <svg className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    Search Properties
+                    {t.home.search.search}
                   </button>
                 </div>
               </div>
@@ -168,7 +168,7 @@ export default function HomePage() {
               <div className="mt-4 pt-4 border-t border-white/20">
                 <details className="group">
                   <summary className="cursor-pointer text-white/90 font-medium hover:text-white transition-colors flex items-center justify-center gap-2">
-                    <span>Advanced Filters</span>
+                    <span>{t.home.search.advancedFilters}</span>
                     <svg className="w-4 h-4 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
@@ -176,14 +176,14 @@ export default function HomePage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <input
                       type="number"
-                      placeholder="Min Price (Rp)"
+                      placeholder={t.home.search.minPrice}
                       className="input-field"
                       value={filters.minPrice}
                       onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
                     />
                     <input
                       type="number"
-                      placeholder="Max Price (Rp)"
+                      placeholder={t.home.search.maxPrice}
                       className="input-field"
                       value={filters.maxPrice}
                       onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
@@ -199,13 +199,13 @@ export default function HomePage() {
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
-                Browse Properties
+                {t.home.cta.browse}
               </Link>
               <Link href="/auth/register" className="btn-accent text-lg px-8 py-4 hover:scale-105">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                List Your Property Free
+                {t.home.cta.listFree}
               </Link>
             </div>
           </div>
@@ -222,12 +222,12 @@ export default function HomePage() {
       {/* How It Works Section */}
       <section className="section-container bg-neutral-50">
         <div className="text-center mb-16">
-          <span className="badge badge-primary text-base px-6 py-2 mb-4 inline-block">How It Works</span>
+          <span className="badge badge-primary text-base px-6 py-2 mb-4 inline-block">{t.home.howItWorks.title}</span>
           <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">
-            Buy or Sell in <span className="text-primary-600">3 Simple Steps</span>
+            {t.home.howItWorks.subtitle}
           </h2>
           <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-            Our streamlined process makes property transactions faster, cheaper, and more transparent
+            {t.home.howItWorks.description}
           </p>
         </div>
 
@@ -245,9 +245,9 @@ export default function HomePage() {
                 1
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Search & Discover</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.howItWorks.step1.title}</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Browse verified properties with detailed information, photos, and direct owner contact
+              {t.home.howItWorks.step1.description}
             </p>
           </div>
 
@@ -264,9 +264,9 @@ export default function HomePage() {
                 2
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Connect Directly</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.howItWorks.step2.title}</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Chat with owners, schedule visits, and negotiate deals without any middlemen
+              {t.home.howItWorks.step2.description}
             </p>
           </div>
 
@@ -283,9 +283,9 @@ export default function HomePage() {
                 3
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Close the Deal</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.howItWorks.step3.title}</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Complete digital paperwork, notary services, and tax payments all in one platform
+              {t.home.howItWorks.step3.description}
             </p>
           </div>
         </div>
@@ -295,19 +295,19 @@ export default function HomePage() {
       <section className="section-container bg-white">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
           <div>
-            <span className="badge badge-primary text-base px-6 py-2 mb-4 inline-block">Featured Listings</span>
+            <span className="badge badge-primary text-base px-6 py-2 mb-4 inline-block">{t.home.featured.badge}</span>
             <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-2">
-              Explore Premium Properties
+              {t.home.featured.title}
             </h2>
             <p className="text-xl text-neutral-600">
-              Handpicked properties from verified owners across Indonesia
+              {t.home.featured.subtitle}
             </p>
           </div>
           <Link
             href="/properties"
             className="btn-secondary group whitespace-nowrap"
           >
-            View All Properties
+            {t.home.featured.viewAll}
             <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -352,7 +352,7 @@ export default function HomePage() {
                   )}
                   <div className="absolute top-4 left-4 flex gap-2">
                     <span className="badge bg-white/95 backdrop-blur-sm text-neutral-800 font-semibold">
-                      {property.listingType === 'SALE' ? 'For Sale' : 'For Rent'}
+                      {property.listingType === 'SALE' ? t.home.featured.forSale : t.home.featured.forRent}
                     </span>
                     <span className="badge badge-primary font-semibold">
                       {property.propertyType}
@@ -414,12 +414,12 @@ export default function HomePage() {
       {/* Value Propositions Section */}
       <section className="section-container bg-neutral-50">
         <div className="text-center mb-16">
-          <span className="badge badge-primary text-base px-6 py-2 mb-4 inline-block">Why Choose EasyHome</span>
+          <span className="badge badge-primary text-base px-6 py-2 mb-4 inline-block">{t.home.whyChoose.badge}</span>
           <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">
-            The Smarter Way to <span className="text-primary-600">Buy & Sell</span>
+            {t.home.whyChoose.title}
           </h2>
           <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-            We're revolutionizing real estate transactions in Indonesia
+            {t.home.whyChoose.subtitle}
           </p>
         </div>
 
@@ -431,12 +431,12 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Save Up to 50x</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.whyChoose.value1.title}</h3>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              Traditional brokers charge 2-5% commission. We charge only 0.05-0.09%. On a Rp 1 Billion property, that's savings of Rp 19-49 Million.
+              {t.home.whyChoose.value1.description}
             </p>
             <div className="inline-flex items-center text-primary-600 font-semibold group cursor-pointer">
-              Learn more
+              {t.home.whyChoose.value1.link}
               <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -450,12 +450,12 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Lightning Fast</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.whyChoose.value2.title}</h3>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              No waiting for broker schedules. Connect with owners instantly, schedule viewings same-day, and close deals in days, not months.
+              {t.home.whyChoose.value2.description}
             </p>
             <div className="inline-flex items-center text-primary-600 font-semibold group cursor-pointer">
-              See how
+              {t.home.whyChoose.value2.link}
               <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -469,12 +469,12 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">100% Verified</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.whyChoose.value3.title}</h3>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              Every property and owner is verified. All legal documents checked. Integrated notary and tax services for complete peace of mind.
+              {t.home.whyChoose.value3.description}
             </p>
             <div className="inline-flex items-center text-primary-600 font-semibold group cursor-pointer">
-              Our process
+              {t.home.whyChoose.value3.link}
               <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -488,12 +488,12 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Smart Matching</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.whyChoose.value4.title}</h3>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              AI-powered recommendations match you with properties that fit your exact needs, budget, and preferences.
+              {t.home.whyChoose.value4.description}
             </p>
             <div className="inline-flex items-center text-primary-600 font-semibold group cursor-pointer">
-              Try it now
+              {t.home.whyChoose.value4.link}
               <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -507,12 +507,12 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Digital Paperwork</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.whyChoose.value5.title}</h3>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              Say goodbye to stacks of paper. Complete all documentation digitally with integrated e-signatures and digital notary services.
+              {t.home.whyChoose.value5.description}
             </p>
             <div className="inline-flex items-center text-primary-600 font-semibold group cursor-pointer">
-              Go paperless
+              {t.home.whyChoose.value5.link}
               <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -526,12 +526,12 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-3">24/7 Support</h3>
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">{t.home.whyChoose.value6.title}</h3>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              Our dedicated support team is always here to help. Get instant answers to your questions anytime, anywhere.
+              {t.home.whyChoose.value6.description}
             </p>
             <div className="inline-flex items-center text-primary-600 font-semibold group cursor-pointer">
-              Contact us
+              {t.home.whyChoose.value6.link}
               <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -543,9 +543,9 @@ export default function HomePage() {
       {/* Comparison Section */}
       <section className="section-container bg-white">
         <div className="text-center mb-16">
-          <span className="badge badge-primary text-base px-6 py-2 mb-4 inline-block">Traditional vs EasyHome</span>
+          <span className="badge badge-primary text-base px-6 py-2 mb-4 inline-block">{t.home.comparison.badge}</span>
           <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">
-            See the <span className="text-primary-600">Difference</span>
+            {t.home.comparison.title}
           </h2>
         </div>
 
@@ -559,38 +559,38 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-neutral-900">Traditional Brokers</h3>
+                <h3 className="text-2xl font-bold text-neutral-900">{t.home.comparison.traditional.title}</h3>
               </div>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <span className="text-neutral-600">2-5% commission fees (Rp 20-50 Million per Billion)</span>
+                  <span className="text-neutral-600">{t.home.comparison.traditional.fees}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <span className="text-neutral-600">Weeks or months to close deals</span>
+                  <span className="text-neutral-600">{t.home.comparison.traditional.slow}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <span className="text-neutral-600">Limited property access</span>
+                  <span className="text-neutral-600">{t.home.comparison.traditional.limited}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <span className="text-neutral-600">Manual paperwork and documentation</span>
+                  <span className="text-neutral-600">{t.home.comparison.traditional.manual}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <span className="text-neutral-600">Hidden costs and surprises</span>
+                  <span className="text-neutral-600">{t.home.comparison.traditional.hidden}</span>
                 </li>
               </ul>
             </div>
@@ -598,7 +598,7 @@ export default function HomePage() {
             {/* EasyHome Method */}
             <div className="relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 badge bg-accent-500 text-white px-4 py-2 text-sm whitespace-nowrap shadow-lg z-10">
-                Recommended
+                {t.home.comparison.easyhome.recommended}
               </div>
               <div className="card p-8 border-2 border-primary-500 shadow-glow pt-10">
               <div className="flex items-center gap-3 mb-6">
@@ -607,38 +607,38 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-neutral-900">EasyHome</h3>
+                <h3 className="text-2xl font-bold text-neutral-900">{t.home.comparison.easyhome.title}</h3>
               </div>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-neutral-900 font-medium">0.05-0.09% fee (Rp 500K-900K per Billion)</span>
+                  <span className="text-neutral-900 font-medium">{t.home.comparison.easyhome.fees}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-neutral-900 font-medium">Close deals in days</span>
+                  <span className="text-neutral-900 font-medium">{t.home.comparison.easyhome.fast}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-neutral-900 font-medium">Access to all listed properties</span>
+                  <span className="text-neutral-900 font-medium">{t.home.comparison.easyhome.access}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-neutral-900 font-medium">Fully digital with e-signatures</span>
+                  <span className="text-neutral-900 font-medium">{t.home.comparison.easyhome.digital}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-neutral-900 font-medium">Transparent pricing, no hidden fees</span>
+                  <span className="text-neutral-900 font-medium">{t.home.comparison.easyhome.transparent}</span>
                 </li>
               </ul>
               </div>
@@ -656,10 +656,10 @@ export default function HomePage() {
         <div className="section-container relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              Ready to Save Millions on Your Next Property?
+              {t.home.finalCta.title}
             </h2>
             <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed">
-              Join thousands of smart buyers and sellers who are eliminating broker fees and closing deals faster
+              {t.home.finalCta.subtitle}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
@@ -667,10 +667,10 @@ export default function HomePage() {
                 <svg className="w-6 h-6 mr-2 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-                Start Listing for Free
+                {t.home.finalCta.startListing}
               </Link>
               <Link href="/properties" className="btn-secondary bg-white/95 backdrop-blur-sm text-lg px-10 py-5 hover:bg-white hover:scale-105 shadow-xl">
-                Explore Properties
+                {t.home.finalCta.explore}
               </Link>
             </div>
 
@@ -682,7 +682,7 @@ export default function HomePage() {
                   </svg>
                   <div className="text-left">
                     <div className="font-bold text-2xl">4.9/5</div>
-                    <div className="text-white/80 text-sm">User Rating</div>
+                    <div className="text-white/80 text-sm">{t.home.finalCta.stats.rating}</div>
                   </div>
                 </div>
                 <div className="hidden md:block w-px h-12 bg-white/20"></div>
@@ -692,7 +692,7 @@ export default function HomePage() {
                   </svg>
                   <div className="text-left">
                     <div className="font-bold text-2xl">5,000+</div>
-                    <div className="text-white/80 text-sm">Active Users</div>
+                    <div className="text-white/80 text-sm">{t.home.finalCta.stats.activeUsers}</div>
                   </div>
                 </div>
                 <div className="hidden md:block w-px h-12 bg-white/20"></div>
@@ -702,7 +702,7 @@ export default function HomePage() {
                   </svg>
                   <div className="text-left">
                     <div className="font-bold text-2xl">Rp 500M+</div>
-                    <div className="text-white/80 text-sm">Transactions</div>
+                    <div className="text-white/80 text-sm">{t.home.finalCta.stats.transactions}</div>
                   </div>
                 </div>
               </div>
@@ -719,7 +719,7 @@ export default function HomePage() {
             <div className="md:col-span-2">
               <h3 className="text-3xl font-bold mb-4 text-primary-400">EasyHome</h3>
               <p className="text-neutral-400 mb-6 max-w-md leading-relaxed">
-                Indonesia's leading integrated electronic housing marketplace. Connecting buyers and sellers directly for transparent, efficient property transactions.
+                {t.home.footer.description}
               </p>
               <div className="flex gap-4">
                 <a href="#" className="w-10 h-10 bg-neutral-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors">
@@ -742,10 +742,10 @@ export default function HomePage() {
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-bold text-lg mb-4">Quick Links</h4>
+              <h4 className="font-bold text-lg mb-4">{t.home.footer.quickLinks}</h4>
               <ul className="space-y-3 text-neutral-400">
-                <li><Link href="/properties" className="hover:text-primary-400 transition-colors">Browse Properties</Link></li>
-                <li><Link href="/auth/register" className="hover:text-primary-400 transition-colors">List Property</Link></li>
+                <li><Link href="/properties" className="hover:text-primary-400 transition-colors">{t.home.cta.browse}</Link></li>
+                <li><Link href="/auth/register" className="hover:text-primary-400 transition-colors">{t.nav.listProperty}</Link></li>
                 <li><Link href="/about" className="hover:text-primary-400 transition-colors">About Us</Link></li>
                 <li><Link href="/contact" className="hover:text-primary-400 transition-colors">Contact</Link></li>
               </ul>
@@ -753,7 +753,7 @@ export default function HomePage() {
 
             {/* Legal */}
             <div>
-              <h4 className="font-bold text-lg mb-4">Legal</h4>
+              <h4 className="font-bold text-lg mb-4">{t.home.footer.legal}</h4>
               <ul className="space-y-3 text-neutral-400">
                 <li><Link href="/terms" className="hover:text-primary-400 transition-colors">Terms of Service</Link></li>
                 <li><Link href="/privacy" className="hover:text-primary-400 transition-colors">Privacy Policy</Link></li>
@@ -765,10 +765,10 @@ export default function HomePage() {
 
           <div className="border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-neutral-400 text-sm">
-              &copy; 2026 EasyHome. All rights reserved. Integrated Electronic Housing Marketplace
+              &copy; 2026 {t.home.footer.copyright}
             </p>
             <div className="flex gap-6 text-sm text-neutral-400">
-              <span>Made with ❤️ in Indonesia</span>
+              <span>{t.home.footer.madeIn}</span>
             </div>
           </div>
         </div>
