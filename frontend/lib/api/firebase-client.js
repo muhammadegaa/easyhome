@@ -242,18 +242,20 @@ export const firebasePropertyAPI = {
       // Increment view count asynchronously (don't wait)
       incrementPropertyViews(id).catch(() => {});
 
-      // Get images for the property
-      const images = await getPropertyImageUrls(id);
+      // Images are already in the property document as URL arrays
+      const images = property.images || [];
 
       return formatResponse({
         property: {
           ...property,
-          images: images.map((img, idx) => ({
-            id: idx,
-            url: img.url,
-            order: idx,
-            isPrimary: idx === 0,
-          })),
+          images: Array.isArray(images)
+            ? images.map((url, idx) => ({
+                id: idx,
+                url: typeof url === 'string' ? url : url.url || url,
+                order: idx,
+                isPrimary: idx === 0,
+              }))
+            : [],
         },
       });
     } catch (error) {
@@ -356,24 +358,24 @@ export const firebasePropertyAPI = {
 
       const properties = await getPropertiesByUserId(user.uid);
 
-      // Get images for each property
-      const propertiesWithImages = await Promise.all(
-        properties.map(async (property) => {
-          const images = await getPropertyImageUrls(property.id);
-          return {
-            ...property,
-            images: images.map((img, idx) => ({
-              id: idx,
-              url: img.url,
-              order: idx,
-              isPrimary: idx === 0,
-            })),
-            _count: {
-              favorites: 0, // TODO: Implement favorites count
-            },
-          };
-        })
-      );
+      // Images are already in the property documents
+      const propertiesWithImages = properties.map((property) => {
+        const images = property.images || [];
+        return {
+          ...property,
+          images: Array.isArray(images)
+            ? images.map((url, idx) => ({
+                id: idx,
+                url: typeof url === 'string' ? url : url.url || url,
+                order: idx,
+                isPrimary: idx === 0,
+              }))
+            : [],
+          _count: {
+            favorites: 0, // TODO: Implement favorites count
+          },
+        };
+      });
 
       return formatResponse({ properties: propertiesWithImages });
     } catch (error) {
@@ -422,21 +424,21 @@ export const firebasePropertyAPI = {
 
       const properties = await getFavoriteProperties(user.uid);
 
-      // Get images for each property
-      const propertiesWithImages = await Promise.all(
-        properties.map(async (property) => {
-          const images = await getPropertyImageUrls(property.id);
-          return {
-            ...property,
-            images: images.map((img, idx) => ({
-              id: idx,
-              url: img.url,
-              order: idx,
-              isPrimary: idx === 0,
-            })),
-          };
-        })
-      );
+      // Images are already in the property documents
+      const propertiesWithImages = properties.map((property) => {
+        const images = property.images || [];
+        return {
+          ...property,
+          images: Array.isArray(images)
+            ? images.map((url, idx) => ({
+                id: idx,
+                url: typeof url === 'string' ? url : url.url || url,
+                order: idx,
+                isPrimary: idx === 0,
+              }))
+            : [],
+        };
+      });
 
       return formatResponse({ properties: propertiesWithImages });
     } catch (error) {
@@ -502,15 +504,19 @@ export const firebaseImageAPI = {
    */
   getPropertyImages: async (propertyId) => {
     try {
-      const images = await getPropertyImageUrls(propertyId);
+      // Get property to access its images array
+      const property = await fbGetPropertyById(propertyId);
+      const images = property?.images || [];
 
       return formatResponse({
-        images: images.map((img, idx) => ({
-          id: idx,
-          url: img.url,
-          order: idx,
-          isPrimary: idx === 0,
-        })),
+        images: Array.isArray(images)
+          ? images.map((url, idx) => ({
+              id: idx,
+              url: typeof url === 'string' ? url : url.url || url,
+              order: idx,
+              isPrimary: idx === 0,
+            }))
+          : [],
       });
     } catch (error) {
       throw formatError(error);
