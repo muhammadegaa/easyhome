@@ -12,33 +12,49 @@
 export function formatRupiah(amount, compact = false) {
   if (!amount || isNaN(amount)) return 'Rp 0';
 
-  const numAmount = Number(amount);
+  // Ensure we have a proper number, not a string
+  const numAmount = parseFloat(amount);
+
+  if (isNaN(numAmount)) return 'Rp 0';
 
   if (compact) {
-    // Use natural Indonesian notation
+    // Use natural Indonesian notation (how Indonesians actually talk about prices)
     if (numAmount >= 1000000000) {
-      // Billions (Miliar) - Indonesians say "2.5 Miliar" not "2500 Juta"
+      // Billions (Miliar) - "Rp 2.5 M" not "Rp 2500 Jt"
       const miliar = numAmount / 1000000000;
-      if (miliar >= 10) {
-        return `Rp ${Math.round(miliar)} M`; // "Rp 15 M" for 15+ billion
+      if (miliar >= 100) {
+        // 100+ billion: "Rp 150 M"
+        return `Rp ${Math.round(miliar)} M`;
+      } else if (miliar >= 10) {
+        // 10-99 billion: "Rp 15 M" (no decimals)
+        return `Rp ${Math.round(miliar)} M`;
+      } else {
+        // 1-9 billion: "Rp 2.5 M" (1 decimal)
+        return `Rp ${miliar.toFixed(1)} M`;
       }
-      return `Rp ${miliar.toFixed(1)} M`; // "Rp 2.5 M" for under 10 billion
     } else if (numAmount >= 1000000) {
-      // Millions (Juta) - only use for under 1 billion
+      // Millions (Juta) - only for under 1 billion
       const juta = numAmount / 1000000;
       if (juta >= 100) {
-        return `Rp ${Math.round(juta)} Jt`; // "Rp 850 Jt"
+        // 100+ million: "Rp 850 Jt"
+        return `Rp ${Math.round(juta)} Jt`;
+      } else if (juta >= 10) {
+        // 10-99 million: "Rp 25 Jt" (no decimals)
+        return `Rp ${Math.round(juta)} Jt`;
+      } else {
+        // 1-9 million: "Rp 2.5 Jt" (1 decimal)
+        return `Rp ${juta.toFixed(1)} Jt`;
       }
-      return `Rp ${juta.toFixed(juta >= 10 ? 0 : 1)} Jt`; // "Rp 2.5 Jt" or "Rp 25 Jt"
     } else if (numAmount >= 10000) {
       // Thousands (Ribu) - for prices under 1 million
       return `Rp ${Math.round(numAmount / 1000)} Rb`;
     }
-    return `Rp ${numAmount.toLocaleString('id-ID')}`;
+    // Under 10k: show full number
+    return `Rp ${Math.round(numAmount).toLocaleString('id-ID')}`;
   }
 
   // Full format with Indonesian locale (Rp 2.500.000)
-  return `Rp ${numAmount.toLocaleString('id-ID')}`;
+  return `Rp ${Math.round(numAmount).toLocaleString('id-ID')}`;
 }
 
 /**

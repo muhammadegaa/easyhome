@@ -26,9 +26,13 @@ service cloud.firestore {
         && request.resource.data.status == 'AVAILABLE'
         && request.resource.data.viewCount == 0;
 
-      // Only owner can update their property
+      // Only owner can update their property details
       allow update: if isOwner(resource.data.userId)
         && request.resource.data.userId == resource.data.userId;
+
+      // Anyone can increment view count (public metric)
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount'])
+        && request.resource.data.viewCount == resource.data.viewCount + 1;
 
       // Only owner can delete their property
       allow delete: if isOwner(resource.data.userId);
