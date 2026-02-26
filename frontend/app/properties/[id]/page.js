@@ -268,27 +268,29 @@ export default function PropertyDetailPage() {
                 </button>
               </div>
 
-              <div className="mt-6 pt-6 border-t">
-                <div className="text-sm text-gray-600 mb-2">Listed by</div>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-primary-600 font-semibold text-lg">
-                      {property.owner?.name?.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="font-semibold">{property.owner?.name}</div>
-                    {property.owner?.companyName && (
-                      <div className="text-sm text-gray-600">{property.owner.companyName}</div>
-                    )}
-                    {property.owner?.membershipTier !== 'NONE' && (
-                      <div className="text-xs text-primary-600 font-medium">
-                        {property.owner.membershipTier} Member
-                      </div>
-                    )}
+              {property.owner && (
+                <div className="mt-6 pt-6 border-t">
+                  <div className="text-sm text-gray-600 mb-2">Listed by</div>
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-primary-600 font-semibold text-lg">
+                        {property.owner?.name?.charAt(0).toUpperCase() || 'U'}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="font-semibold">{property.owner?.name || 'Property Owner'}</div>
+                      {property.owner?.companyName && (
+                        <div className="text-sm text-gray-600">{property.owner.companyName}</div>
+                      )}
+                      {property.owner?.membershipTier && property.owner.membershipTier !== 'NONE' && (
+                        <div className="text-xs text-primary-600 font-medium">
+                          {property.owner.membershipTier} Member
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Stats */}
