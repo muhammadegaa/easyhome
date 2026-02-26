@@ -6,6 +6,7 @@ import Navbar from '@/components/layout/Navbar';
 import { propertyAPI } from '@/lib/api/client';
 import toast from 'react-hot-toast';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
+import { formatCompactRupiah } from '@/lib/utils/currency';
 
 export default function HomePage() {
   const { t } = useLanguage();
@@ -373,9 +374,8 @@ export default function HomePage() {
                   <div className="flex items-baseline justify-between mb-4">
                     <div>
                       <span className="text-3xl font-bold text-primary-600">
-                        Rp {(Number(property.price) / 1000000).toFixed(1)}
+                        {formatCompactRupiah(property.price)}
                       </span>
-                      <span className="text-neutral-600 text-sm ml-1">Jt</span>
                     </div>
                   </div>
                   <div className="flex gap-4 text-sm text-neutral-600 pt-4 border-t border-neutral-100">

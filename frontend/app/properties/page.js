@@ -7,6 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import { propertyAPI } from '@/lib/api/client';
 import toast from 'react-hot-toast';
 import { getImageUrl } from '@/lib/utils/env';
+import { formatCompactRupiah } from '@/lib/utils/currency';
 
 function PropertiesPageContent() {
   const searchParams = useSearchParams();
@@ -335,9 +336,8 @@ function PropertiesPageContent() {
                     <div className="flex items-baseline justify-between mb-4 pb-4 border-b border-neutral-100">
                       <div>
                         <span className="text-3xl font-bold text-primary-600">
-                          Rp {(Number(property.price) / 1000000).toFixed(1)}
+                          {formatCompactRupiah(property.price)}
                         </span>
-                        <span className="text-neutral-600 text-sm ml-1">Juta</span>
                       </div>
                     </div>
 
