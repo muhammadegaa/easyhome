@@ -214,8 +214,24 @@ export const firebasePropertyAPI = {
     try {
       const result = await fbGetProperties(params);
 
+      // Transform images to match expected format
+      const propertiesWithImages = result.properties.map((property) => {
+        const images = property.images || [];
+        return {
+          ...property,
+          images: Array.isArray(images)
+            ? images.map((url, idx) => ({
+                id: idx,
+                url: typeof url === 'string' ? url : url.url || url,
+                order: idx,
+                isPrimary: idx === 0,
+              }))
+            : [],
+        };
+      });
+
       return formatResponse({
-        properties: result.properties,
+        properties: propertiesWithImages,
         pagination: {
           hasMore: result.hasMore,
           total: result.properties.length,
